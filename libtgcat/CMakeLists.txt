@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
-
 project(tgcat VERSION 1.0.0 LANGUAGES CXX)
-
+find_library(LIBFASTTEXT libfasttext HINTS ${CMAKE_SOURCE_DIR}/resources)
 add_library(tgcat SHARED tgcat.cpp)
+target_include_directories(tgcat PRIVATE ${CMAKE_SOURCE_DIR})
+target_link_libraries(tgcat ${CMAKE_SOURCE_DIR}/resources/libfasttext.so)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
