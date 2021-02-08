@@ -1,5 +1,6 @@
 import json
 import tqdm
+import random
 import argparse
 import warnings
 from polyglot.detect import Detector
@@ -31,34 +32,41 @@ class TgChannel:
 def get_clean_text(text):
     return ''.join(x for x in text if x.isprintable())
 
-with open(args.input, 'r') as f:
-    lines = f.readlines()
+if __name__ == '__main__':
+    random.seed(42)
 
-tgChannels = []
+    with open(args.input, 'r') as f:
+        lines = f.readlines()
 
-for line in lines:
-    json_data = json.loads(line)
-    tgChannel = TgChannel(line, json_data)
-    tgChannels.append(tgChannel)
+    tgChannels = []
 
-outs = {'en': [], 'ru': []}
+    for line in lines:
+        json_data = json.loads(line)
+        tgChannel = TgChannel(line, json_data)
+        tgChannels.append(tgChannel)
 
-for i in tqdm.tqdm(range(len(tgChannels))):
-    text = get_clean_text(repr(tgChannels[i]))
-    top_language = Detector(text, quiet=True).languages[0]
-    code = top_language.code
-    confidence = top_language.confidence
+    outs = {'en': [], 'ru': []}
 
-    if code == 'en' and confidence > 90.0:
-        outs[code].append(tgChannels[i].raw_data)
+    for i in tqdm.tqdm(range(len(tgChannels))):
+        text = get_clean_text(repr(tgChannels[i]))
+        top_language = Detector(text, quiet=True).languages[0]
+        code = top_language.code
+        confidence = top_language.confidence
 
-    elif code == 'ru' and confidence > 50.0:
-        outs[code].append(tgChannels[i].raw_data)
+        if code == 'en' and confidence > 90.0:
+            outs[code].append(tgChannels[i].raw_data)
 
-for code, rawChannels in outs.items():
-    args_input_split = args.input.split('-')
-    args_input = args_input_split[0] + f'-{code}-' + args_input_split[-1]
+        elif code == 'ru' and confidence > 50.0:
+            outs[code].append(tgChannels[i].raw_data)
 
-    with open(args_input, 'a') as f:
-        for rawChannel in rawChannels:
-            f.write(f'{rawChannel}')
+    # Shuffle the datasets
+    for code, rawChannels in outs.items():
+        random.shuffle(rawChannels)
+
+    for code, rawChannels in outs.items():
+        args_input_split = args.input.split('-')
+        args_input = args_input_split[0] + f'-{code}-' + args_input_split[-1]
+
+        with open(args_input, 'a') as f:
+            for rawChannel in rawChannels:
+                f.write(f'{rawChannel}')

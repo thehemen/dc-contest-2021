@@ -1,0 +1,64 @@
+{
+    "Society": [
+        "Food & Cooking",
+        "Hobbies & Activities",
+        "Kids & Parenting",
+        "Motivation & Self-Development",
+        "Politics & Incidents",
+        "Psychology & Relationships",
+        "Religion & Spirituality",
+        "Travel & Tourism"
+    ],
+
+    "Economy": [
+        "Business & Entrepreneurship",
+        "Cryptocurrencies",
+        "Economy & Finance",
+        "Home & Architecture",
+        "Investments",
+        "Job Listings",
+        "Marketing & PR",
+        "Offers & Promotions",
+        "Real Estate"
+    ],
+
+    "Technology": [
+        "Cars & Other Vehicles",
+        "Directories of Channels & Bots",
+        "Technology & Internet",
+        "Video Games"
+    ],
+
+    "Sports": [
+        "Bets & Gambling",
+        "Fitness",
+        "Sports"
+    ],
+
+    "Entertainment": [
+        "Art & Design",
+        "Celebrities & Lifestyle",
+        "Culture & Events",
+        "Curious Facts",
+        "Erotic Content",
+        "Fashion & Beauty",
+        "Humor & Memes",
+        "Movies",
+        "Music",
+        "Recreation & Entertainment"
+    ],
+
+    "Science": [
+        "Books",
+        "Education",
+        "Foreign Languages",
+        "Health & Medicine",
+        "History",
+        "Pets",
+        "Science"
+    ],
+
+    "Other": [
+        "Other"
+    ]
+}

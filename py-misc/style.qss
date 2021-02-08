@@ -1,0 +1,33 @@
+QWidget
+{
+	background-color: #0E1621;
+}
+
+QStatusBar {
+	color: white;
+	background-color: #182533;
+}
+
+QLabel
+{
+    border: 2px;
+    border-radius: 4px;
+    padding: 2px;
+    color: white;
+    background-color: #182533;
+}
+
+QListView::item
+{
+    border: 2px;
+    border-radius: 4px;
+    margin: 4px;
+    color: white;
+    background-color: #182533;
+}
+
+QListView::item::selected
+{
+    background-color: #213245;
+}
+

@@ -1041,5 +1041,5 @@ dkms.conf
 
 # Added later
 *input.txt
-*.json
+out.json
 libtgcat/resources/
