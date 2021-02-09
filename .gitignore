@@ -1040,6 +1040,7 @@ Mkfile.old
 dkms.conf
 
 # Added later
+*ground-truth.txt
 *input.txt
 out.json
 libtgcat/resources/

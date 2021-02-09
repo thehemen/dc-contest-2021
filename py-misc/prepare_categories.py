@@ -11,15 +11,15 @@ class TgChannel:
         self.description = self.__fix_by_newline(json_data['description'])
         self.recent_posts = json_data['recent_posts']
 
+        for i, recent_post in enumerate(self.recent_posts):
+            self.recent_posts[i] = self.__fix_by_newline(recent_post)
+
     def __fix_by_newline(self, s, threshold=128):
         s_new = ''
 
         for line in s.split('\n'):
-            if len(line) > threshold:
-                s_new += line[:threshold] + '\n'
-                s_new += line[threshold:] + '\n'
-            else:
-                s_new += line + '\n'
+            for i in range(len(line) // threshold + 1):
+                s_new += line[i * threshold: (i + 1) * threshold] + '\n'
 
         return s_new
 
@@ -99,6 +99,8 @@ class TgChannelManager:
 
 class MyWidget(QtWidgets.QWidget):
     digit_keys = [qt.Key_0, qt.Key_1, qt.Key_2, qt.Key_3, qt.Key_4, qt.Key_5, qt.Key_6, qt.Key_7, qt.Key_8, qt.Key_9]
+    # digit_keys = [qt.Key_Insert, qt.Key_End, qt.Key_Down, qt.Key_PageDown, qt.Key_Left,
+    #               qt.Key_Clear, qt.Key_Right, qt.Key_Home, qt.Key_Up, qt.Key_PageUp]
 
     def __init__(self, categoryDict, tgChannelManager):
         super().__init__()
@@ -180,7 +182,7 @@ class MyWidget(QtWidgets.QWidget):
 
     def update_channel(self):
         index = self.tgChannelManager.get_index()
-        statusBarText = f'{index + 1} / {len(self.tgChannelManager)}'
+        statusBarText = f'{index} / {len(self.tgChannelManager)}'
 
         if len(self.tgChannelManager.get_last_category_name()) > 0:
             statusBarText += f' {self.tgChannelManager.get_last_category_name()}'
@@ -201,8 +203,8 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--start_index', type=int, default=0)
-    parser.add_argument('--dataset_name', default='../data/dc0202-en-input.txt')
-    parser.add_argument('--out_log_name', default='../data/dc0202-en-ground-truth.txt')
+    parser.add_argument('--dataset_name', default='../data/dc0206-en-input.txt')
+    parser.add_argument('--out_log_name', default='../data/dc0206-en-ground-truth.txt')
     args = parser.parse_args()
 
     tgChannels = []
