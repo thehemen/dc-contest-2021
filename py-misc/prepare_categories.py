@@ -43,6 +43,17 @@ class TgChannelManager:
         self.__log_name = log_name
         self.__last_category_name = ''
 
+        self.__loaded_indices = set()
+
+        # Create the file if it doesn't exist
+        with open(log_name, 'a') as f:
+            pass
+
+        with open(log_name, 'r') as f:
+            for line in f.readlines():
+                idx = int(line.split(' ')[0])
+                self.__loaded_indices.add(idx)
+
     def forward(self, category_index):
         self.__category_indices.append(category_index)
 
@@ -72,6 +83,15 @@ class TgChannelManager:
         self.__is_main_category_used = True
         self.__category_indices.clear()
 
+    def skip(self):
+        self.reset()
+
+        if self.__index < len(self.__tg_channels) - 1:
+            self.__index += 1
+            return True
+        else:
+            return False
+
     def get_index(self):
         return self.__index
 
@@ -84,6 +104,9 @@ class TgChannelManager:
     def get_last_category_name(self):
         return self.__last_category_name
 
+    def get_all_index_count(self):
+        return len(self.__loaded_indices)
+
     def __log(self):
         meta_category_name = list(self.__category_dict.keys())[self.__category_indices[0]]
         category_name = self.__category_dict[meta_category_name][self.__category_indices[1]]
@@ -92,6 +115,7 @@ class TgChannelManager:
         with open(self.__log_name, 'a') as f:
             f.write(f'{self.__index} {category_name}\n')
 
+        self.__loaded_indices.add(self.__index)
         self.__category_indices.clear()
 
     def __len__(self):
@@ -166,6 +190,11 @@ class MyWidget(QtWidgets.QWidget):
             self.rightStackedLayout.setCurrentIndex(0)
             self.update_channel()
 
+        elif keyPressed == qt.Key_Space:
+            self.tgChannelManager.skip()
+            self.rightStackedLayout.setCurrentIndex(0)
+            self.update_channel()
+
         elif keyPressed == qt.Key_Escape:
             self.tgChannelManager.reset()
             self.rightStackedLayout.setCurrentIndex(0)
@@ -183,6 +212,9 @@ class MyWidget(QtWidgets.QWidget):
     def update_channel(self):
         index = self.tgChannelManager.get_index()
         statusBarText = f'{index} / {len(self.tgChannelManager)}'
+
+        all_index_count = self.tgChannelManager.get_all_index_count()
+        statusBarText += f' ({all_index_count})'
 
         if len(self.tgChannelManager.get_last_category_name()) > 0:
             statusBarText += f' {self.tgChannelManager.get_last_category_name()}'

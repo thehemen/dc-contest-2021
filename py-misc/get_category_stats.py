@@ -7,7 +7,7 @@ if __name__ == '__main__':
         category_dict = json.load(f)
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--log_name', default='../data/dc0206-en-ground-truth.txt')
+    parser.add_argument('--log_name', default='../data/en-1k-ground-truth.txt')
     args = parser.parse_args()
 
     category_by_idx = {}
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     y = []
 
     for category, count in sorted(category_count.items(), key=lambda x: x[1], reverse=True):
-        print(f'{count} ({count / len(category_by_idx):.2f} %) {category}')
+        print(f'{count} ({(count / len(category_by_idx)) * 100.0:.2f} %) {category}')
         x.append(category)
         y.append(count)
 
