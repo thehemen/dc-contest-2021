@@ -1,1 +1,2 @@
+unicode_threshold 0.1
 fasttext_threshold 0.1
