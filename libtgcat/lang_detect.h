@@ -78,7 +78,7 @@ map<wchar_t, set<size_t>> get_char_dict(vector<wstring> words)
     return char_dict;
 }
 
-map<wchar_t, int> get_alphabet_dict(map<wchar_t, set<size_t>> char_dict, double threshold=0.1)
+map<wchar_t, int> get_alphabet_dict(map<wchar_t, set<size_t>> char_dict, double threshold)
 {
     map<wchar_t, int> alphabet_dict;
     int index_now = 0;
@@ -193,11 +193,11 @@ int get_total_length(vector<wstring> sentences)
     return total_len;
 }
 
-pair<string, double> detect_language(fasttext::FastText& fastText, wstring text, double threshold=0.1)
+pair<string, double> detect_language(fasttext::FastText& fastText, map<string, double> settings, wstring text)
 {
 	auto words = tokenize(text);
 	auto char_dict = get_char_dict(words);
-	auto alphabet_dict = get_alphabet_dict(char_dict);
+	auto alphabet_dict = get_alphabet_dict(char_dict, settings["unicode_threshold"]);
 	auto word_dict = get_word_dict(char_dict, alphabet_dict);
 	auto sentences = get_sentences_by_lang(words, word_dict);
 	int total_len = get_total_length(sentences);
@@ -211,7 +211,7 @@ pair<string, double> detect_language(fasttext::FastText& fastText, wstring text,
 		istringstream utf8_stream(utf8_sentence);
 
 		vector<pair<fasttext::real, string>> predictions;
-		fastText.predictLine(utf8_stream, predictions, 1, threshold);
+		fastText.predictLine(utf8_stream, predictions, 1, settings["fasttext_threshold"]);
 
 		if(predictions.size() > 0)
 		{

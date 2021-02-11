@@ -11,9 +11,11 @@
 using namespace std;
 
 fasttext::FastText fastText;
+map<string, double> settings;
 
 int tgcat_init()
 {
+    settings = load_settings("../resources/settings.txt");
 	fastText.loadModel("../resources/lid.176.bin");
     return 0;
 }
@@ -24,7 +26,7 @@ int tgcat_detect_language(const struct TelegramChannelInfo *channel_info, char l
 
 	TelegramChannel telegramChannel(channel_info->title, channel_info->description, channel_info->post_count, channel_info->posts);
 	wstring text = telegramChannel.get_all_text();
-	pair<string, double> lang_score = detect_language(fastText, text);
+	pair<string, double> lang_score = detect_language(fastText, settings, text);
     memcpy(language_code, lang_score.first.c_str(), lang_score.first.size() + 1);
     return 0;
 }

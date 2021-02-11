@@ -1,4 +1,6 @@
 #include <vector>
+#include <map>
+#include <fstream>
 #include <locale>
 #include <cctype>
 #include <codecvt>
@@ -65,5 +67,20 @@ struct TelegramChannel
         return result;
     }
 };
+
+map<string, double> load_settings(const char* filename)
+{
+    map<string, double> settings;
+    ifstream infile(filename);
+    string key;
+    double value;
+
+    while(infile >> key >> value)
+    {
+        settings[key] = value;
+    }
+
+    return settings;
+}
 
 #endif
