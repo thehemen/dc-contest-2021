@@ -1040,7 +1040,15 @@ Mkfile.old
 dkms.conf
 
 # Added later
+
+# Fasttext's pc
+*.pc
+
+#F asttext's bin
+*.bin
+
+# Dataset and result files
 *ground-truth.txt
 *input.txt
 out.json
-libtgcat/resources/
+ground_truth.json
