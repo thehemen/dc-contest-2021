@@ -52,9 +52,14 @@ if __name__ == '__main__':
 
     for i in tqdm.tqdm(range(len(tgChannels))):
         text = get_clean_text(repr(tgChannels[i]))
-        top_language = Detector(text, quiet=True).languages[0]
-        code = top_language.code
-        confidence = top_language.confidence
+        languages = Detector(text, quiet=True).languages
+        code = languages[0].code
+        confidence = languages[0].confidence
+
+        # If the English score is not so high, choose another language.
+        if len(languages) > 1:
+            if code == 'en' and confidence < 90.0:
+                code = languages[1].code
 
         if len(code) != 2:
             code = "other"
