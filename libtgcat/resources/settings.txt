@@ -1,4 +1,0 @@
-unicode_threshold 0.1
-fasttext_threshold 0.1
-en_compare_threshold 0.7
-en_compare_ratio 15.0

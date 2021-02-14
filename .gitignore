@@ -1050,5 +1050,4 @@ dkms.conf
 # Dataset and result files
 *ground-truth.txt
 *input.txt
-out.json
-ground_truth.json
+out/
